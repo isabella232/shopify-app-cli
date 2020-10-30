@@ -36,10 +36,14 @@ module ShopifyCli
       def acting_as_shopifolk?
         ShopifyCli::Shopifolk.acting_as_shopifolk
       end
-    end
 
-    def self.acting_as_shopifolk
-      @acting_as_shopifolk || (Project.has_current? && Project.current.config['shopifolk'])
+      def acting_as_shopifolk
+        @acting_as_shopifolk || (Project.has_current? && Project.current.config['shopifolk'])
+      end
+
+      def reset
+        @acting_as_shopifolk = nil
+      end
     end
 
     ##

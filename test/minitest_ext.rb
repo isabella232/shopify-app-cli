@@ -16,6 +16,11 @@ module Minitest
       super
     end
 
+    def teardown
+      ShopifyCli::Shopifolk.reset
+      super
+    end
+
     def run_cmd(cmd, split_cmd = true)
       stub_prompt_for_cli_updates
       stub_monorail_log_git_sha
