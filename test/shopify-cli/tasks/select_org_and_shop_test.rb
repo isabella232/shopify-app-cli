@@ -12,6 +12,7 @@ module ShopifyCli
 
       def teardown
         ShopifyCli::Core::Monorail.metadata = {}
+        super
       end
 
       def test_user_will_be_prompted_if_more_than_one_organization
