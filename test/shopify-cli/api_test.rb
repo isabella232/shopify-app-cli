@@ -144,11 +144,6 @@ module ShopifyCli
 
     def test_include_shopify_cli_header_if_shopifolk
       Shopifolk.act_as_shopifolk
-      headers = {
-        'User-Agent' => "Shopify App CLI #{ShopifyCli::VERSION} abcde | Mac",
-        'Auth' => 'faketoken',
-        'X-Shopify-Cli-Employee' => '1',
-      }
       File.stubs(:read)
         .with(File.join(ShopifyCli::ROOT, "lib/graphql/api/mutation.graphql"))
         .returns(@mutation)

@@ -10,32 +10,32 @@ module ShopifyCli
     SECTION = 'core'
     FEATURE_NAME = 'shopifolk'
 
-    ##
-    # will return if the user appears to be a Shopify employee, based on several heuristics
-    #
-    # #### Returns
-    #
-    # * `is_shopifolk` - returns true if the user is a Shopify Employee
-    #
-    # #### Example
-    #
-    #     ShopifyCli::Shopifolk.check
-    #
-    def self.check
-      ShopifyCli::Shopifolk.new.shopifolk?
-    end
+    class << self
+      attr_writer :acting_as_shopifolk
 
-    def self.acting_as_shopifolk?
-      ShopifyCli::Shopifolk.acting_as_shopifolk
-    end
+      ##
+      # will return if the user appears to be a Shopify employee, based on several heuristics
+      #
+      # #### Returns
+      #
+      # * `is_shopifolk` - returns true if the user is a Shopify Employee
+      #
+      # #### Example
+      #
+      #     ShopifyCli::Shopifolk.check
+      #
+      def check
+        ShopifyCli::Shopifolk.new.shopifolk?
+      end
 
-    # TODO can probably find a better name for this
-    def self.act_as_shopifolk
-      ShopifyCli::Shopifolk.acting_as_shopifolk = true
-    end
+      # TODO: can probably find a better name for this
+      def act_as_shopifolk
+        ShopifyCli::Shopifolk.acting_as_shopifolk = true
+      end
 
-    def self.acting_as_shopifolk=(value)
-      @acting_as_shopifolk = true
+      def acting_as_shopifolk?
+        ShopifyCli::Shopifolk.acting_as_shopifolk
+      end
     end
 
     def self.acting_as_shopifolk
