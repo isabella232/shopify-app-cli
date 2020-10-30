@@ -25,6 +25,23 @@ module ShopifyCli
       ShopifyCli::Shopifolk.new.shopifolk?
     end
 
+    def self.acting_as_shopifolk?
+      ShopifyCli::Shopifolk.acting_as_shopifolk
+    end
+
+    # TODO can probably find a better name for this
+    def self.act_as_shopifolk
+      ShopifyCli::Shopifolk.acting_as_shopifolk = true
+    end
+
+    def self.acting_as_shopifolk=(value)
+      @acting_as_shopifolk = true
+    end
+
+    def self.acting_as_shopifolk
+      @acting_as_shopifolk || (Project.has_current? && Project.current.config['shopifolk'])
+    end
+
     ##
     # will return if the user is a Shopify employee
     #

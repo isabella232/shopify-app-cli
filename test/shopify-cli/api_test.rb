@@ -31,8 +31,10 @@ module ShopifyCli
     end
 
     def test_mutation_makes_request_to_shopify
+      Shopifolk.act_as_shopifolk
       headers = {
         'User-Agent' => "Shopify App CLI #{ShopifyCli::VERSION} abcde | Mac",
+        'X-Shopify-Cli-Employee' => '1',
         'Auth' => 'faketoken',
       }
       uri = URI.parse("https://my-test-shop.myshopify.com/admin/api/2019-04/graphql.json")
@@ -138,6 +140,24 @@ module ShopifyCli
       expected_path = File.join(ShopifyCli::ROOT, 'lib', 'graphql', 'my_query.graphql')
       File.expects(:read).with(expected_path).returns('content')
       assert_equal('content', new_api.call_load_query('my_query'))
+    end
+
+    def test_include_shopify_cli_header_if_shopifolk
+      Shopifolk.act_as_shopifolk
+      headers = {
+        'User-Agent' => "Shopify App CLI #{ShopifyCli::VERSION} abcde | Mac",
+        'Auth' => 'faketoken',
+        'X-Shopify-Cli-Employee' => '1',
+      }
+      File.stubs(:read)
+        .with(File.join(ShopifyCli::ROOT, "lib/graphql/api/mutation.graphql"))
+        .returns(@mutation)
+      response = stub('response', code: '200', body: '{}')
+      HttpRequest
+        .expects(:call)
+        .with(anything, @mutation, {}, has_entry({ 'X-Shopify-Cli-Employee' => '1' }))
+        .returns(response)
+      @api.query('api/mutation')
     end
   end
 end

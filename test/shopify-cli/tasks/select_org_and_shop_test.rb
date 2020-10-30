@@ -10,6 +10,7 @@ module ShopifyCli
       end
 
       def test_user_will_be_prompted_if_more_than_one_organization
+        stub_shopify_org_confirmation
         stub_partner_req(
           'all_organizations',
           resp: {
@@ -46,6 +47,7 @@ module ShopifyCli
       end
 
       def test_will_auto_pick_with_only_one_org
+        stub_shopify_org_confirmation
         stub_partner_req(
           'all_organizations',
           resp: {
@@ -72,6 +74,7 @@ module ShopifyCli
       end
 
       def test_organization_will_be_fetched_if_id_is_provided_but_not_shop
+        stub_shopify_org_confirmation
         stub_partner_req(
           'find_organization',
           variables: { id: 123 },
@@ -94,6 +97,7 @@ module ShopifyCli
       end
 
       def test_it_will_fail_if_no_orgs_are_available
+        stub_shopify_org_confirmation
         stub_partner_req(
           'all_organizations',
           resp: { data: { organizations: { nodes: [] } } },
@@ -111,6 +115,7 @@ module ShopifyCli
       end
 
       def test_returns_no_shop_if_none_are_available
+        stub_shopify_org_confirmation
         stub_partner_req(
           'find_organization',
           variables: { id: 123 },
@@ -133,6 +138,7 @@ module ShopifyCli
       end
 
       def test_autopicks_only_shop
+        stub_shopify_org_confirmation
         stub_partner_req(
           'find_organization',
           variables: { id: 123 },
@@ -159,6 +165,7 @@ module ShopifyCli
       end
 
       def test_prompts_user_to_pick_from_shops
+        stub_shopify_org_confirmation
         stub_partner_req(
           'find_organization',
           variables: { id: 123 },
@@ -188,6 +195,58 @@ module ShopifyCli
           .returns('selected')
         form = call(org_id: 123, shop: nil)
         assert_equal('selected', form[:shop_domain])
+      end
+
+      def test_perists_organization_preference_if_chosen
+        stub_partner_req(
+          'find_organization',
+          variables: { id: 123 },
+          resp: {
+            data: {
+              organizations: {
+                nodes: [
+                  {
+                    id: 123,
+                    stores: { nodes: [{ shopDomain: 'shopdomain.myshopify.com', 'transferDisabled': true }] },
+                  },
+                ],
+              },
+            },
+          }
+        )
+        stub_shopify_org_confirmation(response: true)
+        # Shopifolk.expects(:act_as_shopifolk)
+
+        form = call(org_id: 123, shop: nil)
+
+        assert_equal(form[:organization_id], 123)
+        assert_equal(form[:shop_domain], 'shopdomain.myshopify.com')
+      end
+
+      def test_does_not_persist_organization_preference_if_not_chosen
+        stub_partner_req(
+          'find_organization',
+          variables: { id: 123 },
+          resp: {
+            data: {
+              organizations: {
+                nodes: [
+                  {
+                    id: 123,
+                    stores: { nodes: [{ shopDomain: 'shopdomain.myshopify.com', 'transferDisabled': true }] },
+                  },
+                ],
+              },
+            },
+          }
+        )
+        stub_shopify_org_confirmation(response: false)
+        Shopifolk.expects(:act_as_shopifolk).never
+
+        form = call(org_id: 123, shop: nil)
+
+        assert_equal(form[:organization_id], 123)
+        assert_equal(form[:shop_domain], 'shopdomain.myshopify.com')
       end
 
       private
