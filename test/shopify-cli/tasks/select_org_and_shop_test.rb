@@ -5,12 +5,16 @@ module ShopifyCli
     class SelectOrgAndShopTest < MiniTest::Test
       include TestHelpers::Partners
 
+      def setup
+        super
+        stub_shopify_org_confirmation
+      end
+
       def teardown
         ShopifyCli::Core::Monorail.metadata = {}
       end
 
       def test_user_will_be_prompted_if_more_than_one_organization
-        stub_shopify_org_confirmation
         stub_partner_req(
           'all_organizations',
           resp: {
@@ -47,7 +51,6 @@ module ShopifyCli
       end
 
       def test_will_auto_pick_with_only_one_org
-        stub_shopify_org_confirmation
         stub_partner_req(
           'all_organizations',
           resp: {
@@ -74,7 +77,6 @@ module ShopifyCli
       end
 
       def test_organization_will_be_fetched_if_id_is_provided_but_not_shop
-        stub_shopify_org_confirmation
         stub_partner_req(
           'find_organization',
           variables: { id: 123 },
@@ -97,7 +99,6 @@ module ShopifyCli
       end
 
       def test_it_will_fail_if_no_orgs_are_available
-        stub_shopify_org_confirmation
         stub_partner_req(
           'all_organizations',
           resp: { data: { organizations: { nodes: [] } } },
@@ -115,7 +116,6 @@ module ShopifyCli
       end
 
       def test_returns_no_shop_if_none_are_available
-        stub_shopify_org_confirmation
         stub_partner_req(
           'find_organization',
           variables: { id: 123 },
@@ -138,7 +138,6 @@ module ShopifyCli
       end
 
       def test_autopicks_only_shop
-        stub_shopify_org_confirmation
         stub_partner_req(
           'find_organization',
           variables: { id: 123 },
@@ -165,7 +164,6 @@ module ShopifyCli
       end
 
       def test_prompts_user_to_pick_from_shops
-        stub_shopify_org_confirmation
         stub_partner_req(
           'find_organization',
           variables: { id: 123 },
@@ -214,8 +212,6 @@ module ShopifyCli
             },
           }
         )
-        stub_shopify_org_confirmation(response: true)
-        # Shopifolk.expects(:act_as_shopifolk)
 
         form = call(org_id: 123, shop: nil)
 
@@ -240,7 +236,6 @@ module ShopifyCli
             },
           }
         )
-        stub_shopify_org_confirmation(response: false)
         Shopifolk.expects(:act_as_shopifolk).never
 
         form = call(org_id: 123, shop: nil)
