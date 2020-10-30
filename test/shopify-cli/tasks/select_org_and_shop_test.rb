@@ -219,8 +219,8 @@ module ShopifyCli
 
         form = call(org_id: 123, shop: nil)
 
-        assert_equal(form[:organization_id], 123)
-        assert_equal(form[:shop_domain], 'shopdomain.myshopify.com')
+        assert_equal(123, form[:organization_id])
+        assert_equal('shopdomain.myshopify.com', form[:shop_domain])
       end
 
       def test_does_not_persist_organization_preference_if_not_chosen
@@ -245,8 +245,8 @@ module ShopifyCli
 
         form = call(org_id: 123, shop: nil)
 
-        assert_equal(form[:organization_id], 123)
-        assert_equal(form[:shop_domain], 'shopdomain.myshopify.com')
+        assert_equal(123, form[:organization_id])
+        assert_equal('shopdomain.myshopify.com', form[:shop_domain])
       end
 
       private
