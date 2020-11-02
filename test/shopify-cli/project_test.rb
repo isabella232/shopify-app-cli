@@ -29,12 +29,23 @@ module ShopifyCli
     end
 
     def test_write_writes_yaml
-      Shopifolk.stubs(:acting_as_shopifolk)
+      Shopifolk.stubs(:acting_as_shopifolk?).returns(false)
       Dir.stubs(:pwd).returns(@context.root)
       FileUtils.touch(".shopify-cli.yml")
       ShopifyCli::Project.write(@context, project_type: :node, organization_id: 42)
       assert_equal :node, Project.current.config['project_type']
       assert_equal 42, Project.current.config['organization_id']
+      refute Project.current.config['shopifolk']
+    end
+
+    def test_write_writes_yaml_with_shopifolk_field
+      Shopifolk.stubs(:acting_as_shopifolk?).returns(true)
+      Dir.stubs(:pwd).returns(@context.root)
+      FileUtils.touch(".shopify-cli.yml")
+      ShopifyCli::Project.write(@context, project_type: :node, organization_id: 42)
+      assert_equal :node, Project.current.config['project_type']
+      assert_equal 42, Project.current.config['organization_id']
+      assert Project.current.config['shopifolk']
     end
 
     def test_write_includes_identifiers
