@@ -30,15 +30,11 @@ module ShopifyCli
 
       # TODO: can probably find a better name for this
       def act_as_shopifolk
-        ShopifyCli::Shopifolk.acting_as_shopifolk = true
+        @acting_as_shopifolk = true
       end
 
       def acting_as_shopifolk?
-        ShopifyCli::Shopifolk.acting_as_shopifolk
-      end
-
-      def acting_as_shopifolk
-        @acting_as_shopifolk || (Project.has_current? && Project.current.config['shopifolk'])
+        !!@acting_as_shopifolk || (Project.has_current? && Project.current.config['shopifolk'])
       end
 
       def reset
