@@ -42,6 +42,7 @@ module ShopifyCli
             },
           },
         )
+        Shopifolk.expects(:check)
         CLI::UI::Prompt.expects(:ask)
           .with(@context.message('core.tasks.select_org_and_shop.organization_select'))
           .returns(431)
@@ -66,6 +67,7 @@ module ShopifyCli
             },
           },
         )
+        Shopifolk.expects(:check)
         io = capture_io do
           form = call(org_id: nil, shop: nil)
           assert_equal(421, form[:organization_id])
@@ -94,6 +96,7 @@ module ShopifyCli
             },
           }
         )
+        Shopifolk.expects(:check)
         form = call(org_id: 123, shop: nil)
         assert_equal(123, form[:organization_id])
         assert_equal('shopdomain.myshopify.com', form[:shop_domain])
@@ -104,6 +107,7 @@ module ShopifyCli
           'all_organizations',
           resp: { data: { organizations: { nodes: [] } } },
         )
+        Shopifolk.expects(:check)
 
         assert_raises ShopifyCli::Abort do
           io = capture_io do
@@ -129,6 +133,7 @@ module ShopifyCli
           }
         )
 
+        Shopifolk.expects(:check)
         io = capture_io do
           form = call(org_id: 123, shop: nil)
           assert_nil form[:shop_domain]
@@ -155,6 +160,7 @@ module ShopifyCli
             },
           }
         )
+        Shopifolk.expects(:check)
         io = capture_io do
           form = call(org_id: 123, shop: nil)
           assert_equal('shopdomain.myshopify.com', form[:shop_domain])
@@ -186,6 +192,7 @@ module ShopifyCli
           }
         )
 
+        Shopifolk.expects(:check)
         CLI::UI::Prompt.expects(:ask)
           .with(
             @context.message('core.tasks.select_org_and_shop.development_store_select'),
@@ -237,6 +244,7 @@ module ShopifyCli
             },
           }
         )
+        Shopifolk.expects(:check)
         Shopifolk.expects(:act_as_shopifolk).never
 
         form = call(org_id: 123, shop: nil)
