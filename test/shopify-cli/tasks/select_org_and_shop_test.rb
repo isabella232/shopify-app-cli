@@ -203,7 +203,7 @@ module ShopifyCli
         assert_equal('selected', form[:shop_domain])
       end
 
-      def test_perists_organization_preference_if_chosen
+      def test_persists_organization_preference_if_chosen
         stub_partner_req(
           'find_organization',
           variables: { id: 123 },
@@ -221,6 +221,7 @@ module ShopifyCli
           }
         )
 
+        ShopifyCli::Shopifolk.stubs(:check)
         form = call(org_id: 123, shop: nil)
 
         assert_equal(123, form[:organization_id])
