@@ -9,7 +9,7 @@ module ShopifyCli
         @ctx = ctx
         return response(organization_id.to_i, shop_domain) unless organization_id.nil? || shop_domain.nil?
         # TODO: ?
-        if Shopifolk.check && ask_organizational_preference
+        if Shopifolk.check && wants_to_run_against_shopify_org?
           Shopifolk.act_as_shopifolk
         end
         org = get_organization(organization_id)
@@ -20,7 +20,7 @@ module ShopifyCli
 
       private
 
-      def ask_organizational_preference
+      def wants_to_run_against_shopify_org?
         # TODO: colour etc.
         @ctx.puts("We've identified you as Shopify employee")
         CLI::UI::Prompt.confirm(
