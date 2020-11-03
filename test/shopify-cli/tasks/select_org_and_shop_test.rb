@@ -158,7 +158,7 @@ module ShopifyCli
           {
             "id" => 123,
             "stores" => [
-              { "shopDomain" => "shopdomain.myshopify.com", "transferDisabled" => true },
+              { "shopDomain" => "shopdomain.myshopify.com" },
             ],
           }
         )
@@ -175,7 +175,7 @@ module ShopifyCli
           {
             "id" => 123,
             "stores" => [
-              { "shopDomain" => "shopdomain.myshopify.com", "transferDisabled" => true },
+              { "shopDomain" => "shopdomain.myshopify.com" },
             ],
           }
         )
