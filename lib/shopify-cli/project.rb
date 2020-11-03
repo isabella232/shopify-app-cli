@@ -88,7 +88,7 @@ module ShopifyCli
         content = Hash[{ project_type: project_type, organization_id: organization_id.to_i }
           .merge(identifiers)
           .collect { |k, v| [k.to_s, v] }]
-        content['shopifolk'] = 'true' if Shopifolk.acting_as_shopifolk?
+        content['shopifolk'] = true if Shopifolk.acting_as_shopifolk?
 
         ctx.write('.shopify-cli.yml', YAML.dump(content))
       end
@@ -188,7 +188,7 @@ module ShopifyCli
       f = File.join(directory, relative_path)
       require 'yaml' # takes 20ms, so deferred as late as possible.
       begin
-        YAML.load_file(f)
+        YAML.load_file(f) or raise "load failed"
       rescue Psych::SyntaxError => e
         raise(ShopifyCli::Abort, Context.message('core.yaml.error.invalid', relative_path, e.message))
       # rescue Errno::EACCES => e

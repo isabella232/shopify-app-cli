@@ -49,15 +49,16 @@ module ShopifyCli
     end
 
     def test_write_includes_identifiers
-      Shopifolk.stubs(:acting_as_shopifolk)
       Dir.stubs(:pwd).returns(@context.root)
       FileUtils.touch(".shopify-cli.yml")
+      File.write(".shopify-cli.yml", YAML.dump({}))
       ShopifyCli::Project.write(
         @context,
         project_type: :node,
         organization_id: 42,
         other_option: true,
       )
+      Project.clear
       assert Project.current.config['other_option']
     end
 
