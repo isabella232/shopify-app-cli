@@ -154,14 +154,12 @@ module ShopifyCli
       end
 
       def test_persists_organization_preference_if_chosen
-        ShopifyCli::PartnersAPI::Organizations.expects(:fetch).with(@context, id: 123).returns(
-          {
-            "id" => 123,
-            "stores" => [
-              { "shopDomain" => "shopdomain.myshopify.com" },
-            ],
-          }
-        )
+        ShopifyCli::PartnersAPI::Organizations.expects(:fetch).with(@context, id: 123).returns({
+          "id" => 123,
+          "stores" => [
+            { "shopDomain" => "shopdomain.myshopify.com" },
+          ],
+        })
 
         stub_shopify_org_confirmation(response: true)
         ShopifyCli::Feature.expects(:enabled?).with('shopifolk').returns(true)
@@ -171,14 +169,12 @@ module ShopifyCli
       end
 
       def test_does_not_persist_organization_preference_if_not_chosen
-        ShopifyCli::PartnersAPI::Organizations.expects(:fetch).with(@context, id: 123).returns(
-          {
-            "id" => 123,
-            "stores" => [
-              { "shopDomain" => "shopdomain.myshopify.com" },
-            ],
-          }
-        )
+        ShopifyCli::PartnersAPI::Organizations.expects(:fetch).with(@context, id: 123).returns({
+          "id" => 123,
+          "stores" => [
+            { "shopDomain" => "shopdomain.myshopify.com" },
+          ],
+        })
         stub_shopify_org_confirmation(response: false)
         ShopifyCli::Feature.expects(:enabled?).with('shopifolk').returns(true)
         call(org_id: 123, shop: nil)
