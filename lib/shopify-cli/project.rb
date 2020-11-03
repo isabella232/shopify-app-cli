@@ -188,7 +188,7 @@ module ShopifyCli
       f = File.join(directory, relative_path)
       require 'yaml' # takes 20ms, so deferred as late as possible.
       begin
-        YAML.load_file(f) or raise "load failed"
+        YAML.load_file(f) || raise("load failed")
       rescue Psych::SyntaxError => e
         raise(ShopifyCli::Abort, Context.message('core.yaml.error.invalid', relative_path, e.message))
       # rescue Errno::EACCES => e
