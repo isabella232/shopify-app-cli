@@ -165,7 +165,7 @@ module ShopifyCli
         ShopifyCli::Feature.expects(:enabled?).with('shopifolk').returns(true)
         call(org_id: 123, shop: nil)
 
-        assert(Shopifolk.acting_as_shopifolk?)
+        assert(Shopifolk.acting_as_shopify_organization?)
       end
 
       def test_does_not_persist_organization_preference_if_not_chosen
@@ -179,7 +179,7 @@ module ShopifyCli
         ShopifyCli::Feature.expects(:enabled?).with('shopifolk').returns(true)
         call(org_id: 123, shop: nil)
 
-        refute(Shopifolk.acting_as_shopifolk?)
+        refute(Shopifolk.acting_as_shopify_organization?)
       end
 
       private

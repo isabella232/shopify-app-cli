@@ -29,7 +29,7 @@ module ShopifyCli
     end
 
     def test_write_writes_yaml
-      Shopifolk.stubs(:acting_as_shopifolk?).returns(false)
+      Shopifolk.stubs(:acting_as_shopify_organization?).returns(false)
       Dir.stubs(:pwd).returns(@context.root)
       FileUtils.touch(".shopify-cli.yml")
       ShopifyCli::Project.write(@context, project_type: :node, organization_id: 42)
@@ -39,7 +39,7 @@ module ShopifyCli
     end
 
     def test_write_writes_yaml_with_shopifolk_field
-      Shopifolk.stubs(:acting_as_shopifolk?).returns(true)
+      Shopifolk.stubs(:acting_as_shopify_organization?).returns(true)
       Dir.stubs(:pwd).returns(@context.root)
       FileUtils.touch(".shopify-cli.yml")
       ShopifyCli::Project.write(@context, project_type: :node, organization_id: 42)

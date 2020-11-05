@@ -88,7 +88,7 @@ module ShopifyCli
         content = Hash[{ project_type: project_type, organization_id: organization_id.to_i }
           .merge(identifiers)
           .collect { |k, v| [k.to_s, v] }]
-        content['shopifolk'] = true if Shopifolk.acting_as_shopifolk?
+        content['shopifolk'] = true if Shopifolk.acting_as_shopify_organization?
 
         ctx.write('.shopify-cli.yml', YAML.dump(content))
       end

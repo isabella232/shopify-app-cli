@@ -31,7 +31,7 @@ module ShopifyCli
     end
 
     def test_mutation_makes_request_to_shopify
-      Shopifolk.act_as_shopifolk
+      Shopifolk.act_as_shopify_organization
       headers = {
         'User-Agent' => "Shopify App CLI #{ShopifyCli::VERSION} abcde | Mac",
         'X-Shopify-Cli-Employee' => '1',
@@ -143,7 +143,7 @@ module ShopifyCli
     end
 
     def test_include_shopify_cli_header_if_shopifolk
-      Shopifolk.act_as_shopifolk
+      Shopifolk.act_as_shopify_organization
       File.stubs(:read)
         .with(File.join(ShopifyCli::ROOT, "lib/graphql/api/mutation.graphql"))
         .returns(@mutation)

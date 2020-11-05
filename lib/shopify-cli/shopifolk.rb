@@ -11,7 +11,7 @@ module ShopifyCli
     FEATURE_NAME = 'shopifolk'
 
     class << self
-      attr_writer :acting_as_shopifolk
+      attr_writer :acting_as_shopify_organization
 
       ##
       # will return if the user appears to be a Shopify employee, based on several heuristics
@@ -28,17 +28,16 @@ module ShopifyCli
         ShopifyCli::Shopifolk.new.shopifolk?
       end
 
-      # TODO: can probably find a better name for this
-      def act_as_shopifolk
-        @acting_as_shopifolk = true
+      def act_as_shopify_organization
+        @acting_as_shopify_organization = true
       end
 
-      def acting_as_shopifolk?
-        !!@acting_as_shopifolk || (Project.has_current? && Project.current.config['shopifolk'])
+      def acting_as_shopify_organization?
+        !!@acting_as_shopify_organization || (Project.has_current? && Project.current.config['shopifolk'])
       end
 
       def reset
-        @acting_as_shopifolk = nil
+        @acting_as_shopify_organization = nil
       end
     end
 
