@@ -38,7 +38,7 @@ module ShopifyCli
       refute Project.current.config['shopify_organization']
     end
 
-    def test_write_writes_yaml_with_shopifolk_field
+    def test_write_writes_yaml_with_shopify_organization_field
       Shopifolk.stubs(:acting_as_shopify_organization?).returns(true)
       Dir.stubs(:pwd).returns(@context.root)
       FileUtils.touch(".shopify-cli.yml")
